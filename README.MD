@@ -1,5 +1,5 @@
 # From Data to Predictive Control: A Framework for Stochastic Linear Systems with Output Measurements
-The code accompanying our Automatica submission that reproduces the results in the paper.
+The code accompanying our paper that reproduces the results.
 
 **Authors:** Haldun Balim, Andrea Carron, Melanie N. Zeilinger, and Johannes Köhler
 
@@ -14,7 +14,34 @@ python setup.py build
 pip install .
 ~~~~
 
-## Reproducing The Figures
+## Functionality Overview
+![Illustration of the proposed D2PC framework.](assets/framework-fig.png)
+
+The provided code implements our proposed framework Data to Predictive Control (D2PC), which consists of:
+1. An identificaiton scheme based on Expectation-Maximization algorithm, which allows for pre-defined structural constraints to be integrated, see:
+~~~~
+d2pc/id_em/str_em_runner.py
+~~~~
+2. An uncertainty quantification method for the parameter estimates, see:
+~~~~
+d2pc/id_em/unc_quant.py
+~~~~
+3. A robust controller synthesis strategy that minimize $\mathcal{H}_2$-norm of the closed-loop system, see:
+~~~~
+d2pc/control/dynof_synth.py
+~~~~
+4. A predictive controller that ensures chance-constraint satisfaction and recursive feasbility. \
+    a. For offline phase, see:
+    ~~~~
+    d2pc/control/offline.py
+    ~~~~
+    b. For online phase, see:
+    ~~~~
+    d2pc/control/rsmpc.py
+    ~~~~
+
+
+## Reproducing Results From the Paper
 The files in the scripts directory can be used to replicate the figures in the paper. First run the following scripts to execute the offline phase of the algorithm:
 ~~~~
 python scripts/spring_mass_offline.py
@@ -32,16 +59,6 @@ python scripts/generate_dynof_fig.py
 python scripts/sddpc_compare.py
 ~~~~
 The figures will be saved in the corresponding time-stamped directory.
-
-## License
-This work is licensed under a
-[Creative Commons Attribution 4.0 International License][cc-by].
-
-[![CC BY 4.0][cc-by-image]][cc-by] 
-
-[cc-by]: http://creativecommons.org/licenses/by/4.0/
-[cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
-[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
 
 ## Citation
 If you use this code in your research, please cite the accompanying paper: 
