@@ -15,7 +15,11 @@ pip install .
 ~~~~
 
 ## Functionality Overview
-![Illustration of the proposed D2PC framework.](assets/framework-fig.png)
+<p align="center">
+  <img src="./assets/framework-fig.png" alt="Illustration of the proposed D2PC framework.">
+  <br>
+  <em>Illustration of the proposed D2PC framework.</em>
+</p>
 
 The provided code implements our proposed framework Data to Predictive Control (D2PC), which consists of:
 1. An identificaiton scheme based on Expectation-Maximization algorithm, which allows for pre-defined structural constraints to be integrated, see:
