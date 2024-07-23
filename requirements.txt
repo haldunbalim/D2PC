@@ -1,0 +1,10 @@
+numpy==1.25.2
+scipy==1.11.2
+matplotlib==3.9.0
+casadi==3.6.2
+control===0.9.4
+cvxpy==1.3.2
+pandas==2.1.0
+tqdm==4.66.1
+mosek==10.1.11
+cvxopt==1.3.2
