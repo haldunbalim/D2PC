@@ -346,6 +346,9 @@ def control_plot(xs_mean_lmi: np.ndarray, xs_std_lmi: np.ndarray, xs_vio_mean_lm
             axs[j, i].set_xlabel("time-step", fontsize=15)
     axs[0, 0].set_title("LMI Tube Dyn.")
     axs[0, 1].set_title("SOC Tube Dyn.")
+
+    axs[2, 0].set_yticks([0, 0.02, 0.04], ["0%", "2%", "4%"])
+    axs[2, 1].set_yticks([0, 0.02, 0.04], ["0%", "2%", "4%"])
     return fig
 
 def get_logger(path, ext="log"):

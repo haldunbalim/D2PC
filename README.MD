@@ -46,7 +46,7 @@ d2pc/control/dynof_synth.py
 
 
 ## Reproducing Results From the Paper
-The files in the scripts directory can be used to replicate the figures in the paper. First run the following scripts to execute the offline phase of the algorithm:
+Implementation of D2PC framework on our numerical benchmark example ($10$-dimensional chain mass system) can be found in scripts folder. In the following we detail how to replicate the results and generate figures in the paper. First, run the following scripts to execute the offline phase of the algorithm:
 ~~~~
 python scripts/spring_mass_offline.py
 ~~~~
