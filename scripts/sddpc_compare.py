@@ -55,9 +55,9 @@ if not os.path.exists(os.path.join(wdir, "sddpc-compare.pkl")) or args.recompute
     tights_lmi_arx, tights_soc_arx = sddpc_compare_d2pc_arx(
         arx_ctrlr, args.T, args.p_cc, h)
     # compute tightening for S-DDPC
-    u_trajs = np.ones((1, args.T, true_sys.nu))
-    tight_smm = compute_tight_sddpc(true_sys, ys, us, u_trajs, P0, h, args.T, args.p_cc,
-                                    true_sys.Q, true_sys.R[0, 0], ws, orders, n_ysamples=1000)
+    u_traj = np.ones((args.T, true_sys.nu))
+    tight_smm = compute_tight_sddpc(true_sys, ys, us, u_traj, P0, h, args.T, args.p_cc,
+                                    true_sys.Q, true_sys.R[0, 0], ws, orders)
 
     # timing
     P0y = true_sys.C @ P0 @ true_sys.C.T + true_sys.R
@@ -80,7 +80,6 @@ if not os.path.exists(os.path.join(wdir, "sddpc-compare.pkl")) or args.recompute
                         "tights_lmi": tights_lmi, "tights_soc": tights_soc,
                         "tights_lmi_arx": tights_lmi_arx, "tights_soc_arx": tights_soc_arx,
                         "tights_true": tights_true, "times": times}, f)
-
 else:
     with open(os.path.join(wdir, "sddpc-compare.pkl"), "rb") as f:
         data = pickle.load(f)

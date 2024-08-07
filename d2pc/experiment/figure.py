@@ -438,13 +438,13 @@ def sddpc_compare_d2pc_arx(ctrlr, T, p, h):
     return f * tubes_lmi + stoch_tights, f * tubes_soc + stoch_tights
 
 
-def compute_tight_sddpc(true_sys, ys, us, u_trajs, P0, h, T, p, Q, r, ws, orders, n_ysamples=10000):
+def compute_tight_sddpc(true_sys, ys, us, u_traj, P0, h, T, p, Q, r, ws, orders, n_ysamples=10000):
     """
         Compute the tightening for S-DDPC
         - true_sys: the true system
         - ys: the output sequence
         - us: the input sequence
-        - u_trajs: input trajectories
+        - u_traj: input trajectories
         - P0: the initial covariance
         - h: constraint vector
         - T: the prediction horizon
@@ -493,9 +493,8 @@ def compute_tight_sddpc(true_sys, ys, us, u_trajs, P0, h, T, p, Q, r, ws, orders
                                      L0) @ smm_gamma.T + Gamw @ Sigw @ Gamw.T
         FF3 = np.sqrt(np.diag(barH @ cov @ barH.T))
         FF4 = np.sqrt(np.diag(
-            barH @ (r * (smm_gamma @ smm_gamma.T + np.eye(T * true_sys.nu))) @ barH.T))
-        u_term = u_trajs.reshape(
-            u_trajs.shape[0], -1) @ FF2[:, L0*true_sys.nu: L*true_sys.nu].T
+            barH @ (r * (smm_gamma @ smm_gamma.T + np.eye(T * true_sys.ny))) @ barH.T))
+        u_term = u_traj.flatten() @ FF2[:, L0*true_sys.nu: L*true_sys.nu].T
         
         # generate y-sequence
         _x0 = [np.random.multivariate_normal(np.zeros(true_sys.nx), P0, n_ysamples)]
