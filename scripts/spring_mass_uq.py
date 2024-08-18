@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 # args for true system, and estimation problem
 parser = argparse.ArgumentParser()
-parser.add_argument("--seed", type=str, default=0, help="Random Seed")
+parser.add_argument("--seed", type=int, default=0, help="Random Seed")
 parser.add_argument("--wdir", type=str, default=None,
                     help="Folder name for the current experiment, if not provided retrieves last one in outputs folder")
 parser.add_argument("--num-trials", type=int, default=1000,

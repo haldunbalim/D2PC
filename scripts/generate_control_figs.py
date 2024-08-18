@@ -6,7 +6,7 @@ from d2pc.experiment.figure import *
 
 # args for true system, and estimation problem
 parser = argparse.ArgumentParser()
-parser.add_argument("--seed", type=str, default=0, help="Random Seed")
+parser.add_argument("--seed", type=int, default=0, help="Random Seed")
 parser.add_argument("--wdir", type=str, default=None,
                     help="Folder name for the current experiment, if not provided retrieves last one in outputs folder")
 parser.add_argument("-T", type=int, default=30, help="Control horizon")
@@ -20,6 +20,7 @@ parser.add_argument("--mass-nr", type=int, default=4, help="Mass number to plot"
 parser.add_argument("--recompute", action="store_true",
                     help="Recompute the results")
 args = parser.parse_args()
+print(type(args.seed))
 set_seed(args.seed)
 
 # load data
