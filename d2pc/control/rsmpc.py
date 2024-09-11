@@ -71,13 +71,14 @@ class RSMPCController:
             self.stoch_tight_tv, self.nom_tight)
 
     def setup(self, init_state_mean:np.ndarray, T: int, approx: Optional[bool] = False, 
-              solver: Optional[str] = None, **solver_args: dict):
+              solver: Optional[str] = None, ignore_terminal: bool = False, **solver_args: dict):
         """
         Setup the controller for the given system.
             - init_state_mean: np.ndarray (nx,) - initial state mean
             - T: int - time horizon
             - approx: bool - whether to use the approximate tube dynamics
             - solver: Optional[str] - cvxpy solver to use, default is (MOSEK if approx else ECOS)
+            - ignore_terminal: bool - whether to ignore terminal constraints
         """
         # initialize
         self.T = T
@@ -87,7 +88,7 @@ class RSMPCController:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             init_xi_mean = np.hstack([init_state_mean, np.zeros(self.sys.nx)])
-            self.prob = self.construct_control_prob(init_xi_mean, approx, solver, **solver_args)
+            self.prob = self.construct_control_prob(init_xi_mean, approx, solver, ignore_terminal, **solver_args)
 
         # to store the results
         self.nus = []
@@ -95,7 +96,7 @@ class RSMPCController:
         self.xis = []
         self.objs = []
 
-    def _construct_control_prob(self, approx: bool):
+    def _construct_control_prob(self, approx: bool, ignore_terminal: bool = False):
         """
         Construct the optimization problem.
             - approx: bool - whether to use the approximate tube dynamics
@@ -168,24 +169,26 @@ class RSMPCController:
         cost += cp.sum_squares(Sc_sqrt @ xis[-1])
 
         # terminal constraint:
-        constraints += [cp.norm(calP_sqrt@xis[-1]) +
-                        alphas[-1] <= self.underbar_c]
-        if self.bar_sigma >= 1-self.rho:
-            constraints += [cp.norm(calP_sqrt @ xis[-1]) <=
-                            (1-self.rho) * self.underbar_c / self.bar_sigma]
+        if not ignore_terminal:
+            constraints += [cp.norm(calP_sqrt@xis[-1]) +
+                            alphas[-1] <= self.underbar_c]
+            if self.bar_sigma >= 1-self.rho:
+                constraints += [cp.norm(calP_sqrt @ xis[-1]) <=
+                                (1-self.rho) * self.underbar_c / self.bar_sigma]
         # form control problem
         prob = cp.Problem(cp.Minimize(cost), constraints)
         return prob, (init_xi, init_alpha, stoch_tight), (xis, alphas, input_terms)
 
-    def construct_control_prob(self, init_xi_mean: np.ndarray, approx: bool, solver: Optional[str] = None, **solver_args: dict):
+    def construct_control_prob(self, init_xi_mean: np.ndarray, approx: bool, solver: Optional[str] = None, ignore_terminal: bool = False, **solver_args: dict):
         """
         Construct the function that calls the optimization problem.
             - init_state_mean: np.ndarray (nx,) - initial state mean
             - approx: bool - whether to use the approximate tube dynamics
             - solver: Optional[str] - cvxpy solver to use
+            - ignore_terminal: bool - whether to ignore terminal constraints
         """
         # construct the optimization problem
-        prob, params, vars = self._construct_control_prob(approx)
+        prob, params, vars = self._construct_control_prob(approx, ignore_terminal)
         init_xi, init_alpha, stoch_tight = params
         xis, alphas, input_terms = vars
 
