@@ -59,9 +59,9 @@ def create_process_opt_blocks(Qprojectors:List[np.ndarray], Qtypes:List[np.ndarr
             if Qtypes[idx] == "full" and not cf_cond:
                 # iterative solution
                 opt_blocks.append(OptBlockLBFGS(Qprojectors[idx], J_indvs[idx],
-                                                th0_indvs[idx], [Qtypes[idx]], [np.eye(Qprojectors[idx].shape[0])]), 
+                                                th0_indvs[idx], [Qtypes[idx]], [np.eye(Qprojectors[idx].shape[0])], 
                                                 min_eigval=min_eigval, max_eigval=max_eigval, 
-                                                max_abs_val=max_abs_val, ignore_Theta=ignore_Theta)
+                                                max_abs_val=max_abs_val, ignore_Theta=ignore_Theta))
             else:
                 # closed-form solution
                 opt_blocks.append(OptBlockCF(

@@ -89,7 +89,7 @@ def estimate_arx_sys(ys: np.ndarray, us: np.ndarray, order: int,
                      Q: Optional[np.ndarray] = None, Qtype: Optional[str] = "full",
                      R: Optional[np.ndarray] = None, Rtype: Optional[str] = "full",
                      mu0: Optional[np.ndarray] = None, P0: Optional[np.ndarray] = None, 
-                     warm_start_ls: bool = True, update_init_dist:bool=False, ignore_Theta:bool=False, 
+                     warm_start_ls: bool = True, update_init_dist:bool=True, ignore_Theta:bool=False, 
                      convert_to_std=True, **em_kwargs):
     """
     Estimate an ARX system using the EM algorithm
